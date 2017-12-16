@@ -103,38 +103,20 @@ class Solver {
           callbacks_[i]->on_gradients_ready();
   }
 
-  inline SolverParameter& ref_param() { return param_; }
-  inline int& ref_iter() { return iter_; }
-  inline int& ref_current_step() { return current_step_; }
-//  inline shared_ptr<Net<Dtype> > net() { return net_; }
-  inline vector<shared_ptr<Net<Dtype> > >& ref_test_nets() { return test_nets_; }
-  inline vector<Callback*>& ref_callbacks() { return callbacks_; }
-  inline vector<Dtype>& ref_losses() { return losses_; }
-  inline Dtype& ref_smoothed_loss() { return smoothed_loss_; }
-
-  inline ActionCallback& ref_action_request_function() {
-      return action_request_function_; }
-  inline bool& ref_requested_early_exit() { return requested_early_exit_; }
-  inline Timer& ref_iteration_timer() { return iteration_timer_; }
-  inline float& ref_iterations_last_() { return iterations_last_; }
-
-  virtual void ApplyUpdate() = 0;
-  void TestAll();
-  void UpdateSmoothedLoss(Dtype loss, int start_iter, int average_loss);
- protected:
+// protected:
   // Make and apply the update value for the current iteration.
-//  virtual void ApplyUpdate() = 0;
+  virtual void ApplyUpdate() = 0;
   string SnapshotFilename(const string extension);
   string SnapshotToBinaryProto();
   string SnapshotToHDF5();
   // The test routine
-//  void TestAll();
+  void TestAll();
   void Test(const int test_net_id = 0);
   virtual void SnapshotSolverState(const string& model_filename) = 0;
   virtual void RestoreSolverStateFromHDF5(const string& state_file) = 0;
   virtual void RestoreSolverStateFromBinaryProto(const string& state_file) = 0;
   void DisplayOutputBlobs(const int net_id);
-//  void UpdateSmoothedLoss(Dtype loss, int start_iter, int average_loss);
+  void UpdateSmoothedLoss(Dtype loss, int start_iter, int average_loss);
 
   SolverParameter param_;
   int iter_;
